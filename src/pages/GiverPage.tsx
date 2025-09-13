@@ -100,20 +100,32 @@ const GiftModal: React.FC<{ gift: Gift; onSend: (message?: string) => void; onCl
 };
 
 const GiverPage: React.FC = () => {
-    const { teams, currentTeamId, sendGift, gifts } = useAppContext();
+    const { teams, currentTeamId, sendGift, gifts, ensureGiver, addGiver } = useAppContext();
     const [giver, setGiver] = useState<Giver | null>(null);
     const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
 
     useEffect(() => {
-        const storedGiver = localStorage.getItem(GIVER_STORAGE_KEY);
-        if (storedGiver) {
-            setGiver(JSON.parse(storedGiver));
+        const stored = localStorage.getItem(GIVER_STORAGE_KEY);
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored) as Giver;
+                // Ensure global context knows this giver and keep the unified record
+                const unified = ensureGiver(parsed);
+                if (unified.id !== parsed.id) {
+                    localStorage.setItem(GIVER_STORAGE_KEY, JSON.stringify(unified));
+                }
+                setGiver(unified);
+                return;
+            } catch {}
         }
-    }, []);
+        // No stored giver: keep as null and let registration modal handle addGiver
+    }, [ensureGiver]);
 
     const handleRegister = (newGiver: Giver) => {
-        localStorage.setItem(GIVER_STORAGE_KEY, JSON.stringify(newGiver));
-        setGiver(newGiver);
+        // When user just registered via modal, make sure the unified record is stored
+        const unified = ensureGiver(newGiver);
+        localStorage.setItem(GIVER_STORAGE_KEY, JSON.stringify(unified));
+        setGiver(unified);
     };
 
     const handleSendGift = (message?: string) => {

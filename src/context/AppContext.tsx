@@ -10,6 +10,7 @@ interface AppContextType {
   currentTeamId: number | null;
   addTeam: (name: string) => void;
   addGiver: (giver: Omit<Giver, 'id'>) => Giver;
+  ensureGiver: (giver: Giver) => Giver;
   sendGift: (giftEvent: Omit<GiftEvent, 'id' | 'timestamp'>) => void;
   setCurrentTeamId: (id: number | null) => void;
   addGift: (gift: Omit<Gift, 'id'>) => void;
@@ -133,6 +134,17 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return newGiver;
   }, [givers]);
 
+  // Ensure a known giver (with fixed id) exists in state; used when restoring from local storage
+  const ensureGiver = useCallback((incoming: Giver) => {
+    const foundById = givers.find(g => g.id === incoming.id);
+    if (foundById) return foundById;
+    const foundByPhone = givers.find(g => g.phone === incoming.phone);
+    if (foundByPhone) return foundByPhone;
+    setGivers(prev => [...prev, incoming]);
+    channelRef.current?.postMessage({ type: 'ADD_GIVER', payload: incoming } as ChannelMsg);
+    return incoming;
+  }, [givers]);
+
   const sendGift = useCallback((giftEventData: Omit<GiftEvent, 'id' | 'timestamp'>) => {
     const newGiftEvent: GiftEvent = {
       ...giftEventData,
@@ -169,6 +181,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     currentTeamId,
     addTeam,
     addGiver,
+    ensureGiver,
     sendGift,
     setCurrentTeamId: setCurrentTeamIdWithBroadcast,
     addGift,
