@@ -107,6 +107,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   useEffect(() => { try { localStorage.setItem(LS_KEYS.gifts, JSON.stringify(gifts)); } catch {} }, [gifts]);
   useEffect(() => { try { localStorage.setItem(LS_KEYS.currentTeamId, JSON.stringify(currentTeamId)); } catch {} }, [currentTeamId]);
 
+  // Ensure initial snapshot is persisted even if state hasn't changed yet
+  useEffect(() => {
+    try {
+      localStorage.setItem(LS_KEYS.teams, JSON.stringify(teams));
+      localStorage.setItem(LS_KEYS.givers, JSON.stringify(givers));
+      localStorage.setItem(LS_KEYS.giftEvents, JSON.stringify(giftEvents));
+      localStorage.setItem(LS_KEYS.gifts, JSON.stringify(gifts));
+      localStorage.setItem(LS_KEYS.currentTeamId, JSON.stringify(currentTeamId));
+    } catch {}
+    // We want this to run once on mount with initial state
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const addTeam = useCallback((name: string) => {
     setTeams(prev => [...prev, { id: Date.now(), name }]);
   }, []);

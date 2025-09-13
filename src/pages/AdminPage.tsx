@@ -131,15 +131,33 @@ const AdminPage: React.FC = () => {
         const totals: { [giverId: string]: number } = {};
         giftEvents.forEach(event => {
             const gift = gifts.find(g => g.id === event.giftId);
-            if (gift) {
-                if (!totals[event.giverId]) {
-                    totals[event.giverId] = 0;
-                }
-                totals[event.giverId] += gift.price;
-            }
+            if (!gift) return;
+            totals[event.giverId] = (totals[event.giverId] || 0) + gift.price;
         });
         return totals;
     }, [giftEvents, gifts]);
+
+    // Merge known givers with any giverIds that appear only in events (fallback rows)
+    const giverRows = useMemo(() => {
+        const known = givers.map(g => ({
+            id: g.id,
+            realName: g.realName,
+            nickname: g.nickname,
+            department: g.department,
+            phone: g.phone,
+            total: giverTotals[g.id] || 0,
+        }));
+        const unknownIds = Object.keys(giverTotals).filter(id => !givers.find(g => g.id === id));
+        const unknown = unknownIds.map(id => ({
+            id,
+            realName: '(未登記)',
+            nickname: '匿名用戶',
+            department: '-',
+            phone: '-',
+            total: giverTotals[id] || 0,
+        }));
+        return [...known, ...unknown].sort((a,b) => b.total - a.total);
+    }, [givers, giverTotals]);
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-200 p-8">
@@ -263,13 +281,13 @@ const AdminPage: React.FC = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {givers.sort((a,b) => (giverTotals[b.id] || 0) - (giverTotals[a.id] || 0)).map(giver => (
-                                            <tr key={giver.id} className="border-b border-gray-700 hover:bg-gray-700">
-                                                <td className="p-3">{giver.realName} <span className="text-gray-400">({giver.nickname})</span></td>
-                                                <td className="p-3">{giver.department}</td>
-                                                <td className="p-3">{giver.phone}</td>
+                                        {giverRows.map(row => (
+                                            <tr key={row.id} className="border-b border-gray-700 hover:bg-gray-700">
+                                                <td className="p-3">{row.realName} <span className="text-gray-400">({row.nickname})</span></td>
+                                                <td className="p-3">{row.department}</td>
+                                                <td className="p-3">{row.phone}</td>
                                                 <td className="p-3 text-right font-mono font-semibold text-blue-400">
-                                                    ${(giverTotals[giver.id] || 0).toLocaleString()}
+                                                    ${row.total.toLocaleString()}
                                                 </td>
                                             </tr>
                                         ))}

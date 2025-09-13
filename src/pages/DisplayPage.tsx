@@ -68,14 +68,14 @@ const Leaderboard: React.FC = () => {
         const giverTotals: { [giverId: string]: { nickname: string; total: number } } = {};
 
         teamEvents.forEach(event => {
-            const giver = givers.find(g => g.id === event.giverId);
             const gift = gifts.find(g => g.id === event.giftId);
-            if (giver && gift) {
-                if (!giverTotals[giver.id]) {
-                    giverTotals[giver.id] = { nickname: giver.nickname, total: 0 };
-                }
-                giverTotals[giver.id].total += gift.price;
+            if (!gift) return;
+            const giver = givers.find(g => g.id === event.giverId);
+            const nickname = giver?.nickname || '匿名用戶';
+            if (!giverTotals[event.giverId]) {
+                giverTotals[event.giverId] = { nickname, total: 0 };
             }
+            giverTotals[event.giverId].total += gift.price;
         });
 
         return Object.values(giverTotals)
