@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Year-End Party Gift Stream</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            keyframes: {
+              'gift-popup': {
+                '0%, 100%': { transform: 'scale(0.5)', opacity: '0' },
+                '50%': { transform: 'scale(1.2)', opacity: '1' },
+                '90%': { transform: 'scale(1)', opacity: '1' },
+              },
+              'confetti-rain': {
+                '0%': { transform: 'translateY(-100%)', opacity: '1' },
+                '100%': { transform: 'translateY(100vh)', opacity: '0' },
+              },
+              'rocket-fly': {
+                '0%': { transform: 'translateY(100vh) scale(0.5)', opacity: '1' },
+                '100%': { transform: 'translateY(-100vh) scale(1.5)', opacity: '0.5' },
+              },
+              'car-drive': {
+                '0%': { transform: 'translateX(-100vw) scaleX(-1)', opacity: '1' },
+                '100%': { transform: 'translateX(100vw) scaleX(-1)', opacity: '1' },
+              },
+              'plane-fly': {
+                '0%': { transform: 'translate(100vw, -20vh) scale(0.8)', opacity: '1' },
+                '100%': { transform: 'translate(-100vw, 20vh) scale(1.2)', opacity: '1' },
+              },
+              'diamond-flash': {
+                '0%, 100%': { transform: 'scale(0.8) rotate(-45deg)', opacity: '0' },
+                '20%, 80%': { transform: 'scale(1.2) rotate(-45deg)', opacity: '1', filter: 'brightness(2)' },
+                '50%': { transform: 'scale(1.2) rotate(-45deg)', opacity: '1', filter: 'brightness(1.2)' },
+              },
+              'glowstick-wave': {
+                '0%, 100%': { transform: 'scale(1.5) rotate(30deg)', opacity: '1' },
+                '50%': { transform: 'scale(1.5) rotate(-30deg)', opacity: '1', filter: 'brightness(1.5)' },
+              },
+              'beer-cheers': {
+                '0%': { transform: 'translate(-50vw, -50vh) scale(0.8) rotate(-15deg)', opacity: '0' },
+                '50%': { transform: 'translate(0,0) scale(1.2) rotate(0deg)', opacity: '1' },
+                '100%': { transform: 'translate(50vw, -50vh) scale(0.8) rotate(15deg)', opacity: '0' },
+              },
+              'horn-blast': {
+                '0%': { transform: 'scale(1) translateX(0)', opacity: '1' },
+                '10%, 30%, 50%': { transform: 'scale(1.1) translateX(-10px)', filter: 'brightness(1.2)' },
+                '20%, 40%': { transform: 'scale(1.1) translateX(10px)' },
+                '60%, 100%': { transform: 'scale(2) translateX(100vw)', opacity: '0' },
+              },
+              'flower-bloom': {
+                '0%': { transform: 'scale(0.5) rotate(0deg)', opacity: '0' },
+                '50%': { transform: 'scale(1.2) rotate(360deg)', opacity: '1' },
+                '100%': { transform: 'scale(0.8) rotate(720deg)', opacity: '0' },
+              },
+            },
+            animation: {
+              'gift-popup': 'gift-popup 1s ease-in-out forwards',
+              'confetti-rain': 'confetti-rain 5s linear forwards',
+              'rocket-fly': 'rocket-fly 4s ease-in forwards',
+              'car-drive': 'car-drive 5s linear forwards',
+              'plane-fly': 'plane-fly 6s ease-out forwards',
+              'diamond-flash': 'diamond-flash 2.5s ease-in-out forwards',
+              'glowstick-wave': 'glowstick-wave 1s ease-in-out infinite',
+              'beer-cheers': 'beer-cheers 2.5s ease-in-out forwards',
+              'horn-blast': 'horn-blast 2s ease-out forwards',
+              'flower-bloom': 'flower-bloom 3s ease-in-out forwards',
+            },
+          },
+        },
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.1",
+    "vite": "https://aistudiocdn.com/vite@^7.1.5",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.0.2"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

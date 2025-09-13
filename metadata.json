@@ -1,0 +1,5 @@
+{
+  "name": "Year-End Party Gift Stream",
+  "description": "A real-time gift-giving application for corporate year-end parties. Audience members can send virtual gifts to performers on stage, with a live display screen showing the activity and a leaderboard. An admin panel is included for management.",
+  "requestFramePermissions": []
+}
